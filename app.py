@@ -5,6 +5,7 @@ import sqlite3
 app = Flask(__name__)
 CORS(app)
 
+
 def init_db():
     conn = sqlite3.connect('ventas.db')
     c = conn.cursor()
@@ -19,6 +20,8 @@ def init_db():
     conn.close()
 
 # Ruta para REGISTRAR (index.html)
+
+
 @app.route('/registrar', methods=['POST'])
 def registrar_venta():
     data = request.json
@@ -31,10 +34,12 @@ def registrar_venta():
     return jsonify({"mensaje": "Venta registrada correctamente"})
 
 # Ruta para MOSTRAR (reporte.html)
+
+
 @app.route('/obtener_ventas', methods=['GET'])
 def obtener_ventas():
     conn = sqlite3.connect('ventas.db')
-    conn.row_factory = sqlite3.Row 
+    conn.row_factory = sqlite3.Row
     c = conn.cursor()
     c.execute("SELECT * FROM ventas")
     filas = c.fetchall()
@@ -43,6 +48,8 @@ def obtener_ventas():
     return jsonify(ventas)
 
 # Ruta para ELIMINAR (Tu parte del trabajo)
+
+
 @app.route('/eliminar/<int:id>', methods=['DELETE'])
 def eliminar_venta(id):
     conn = sqlite3.connect('ventas.db')
@@ -51,6 +58,7 @@ def eliminar_venta(id):
     conn.commit()
     conn.close()
     return jsonify({"mensaje": "Registro eliminado correctamente"})
+
 
 if __name__ == '__main__':
     init_db()
