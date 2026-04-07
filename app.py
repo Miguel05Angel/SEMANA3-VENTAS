@@ -18,6 +18,7 @@ def init_db():
     conn.commit()
     conn.close()
 
+# Ruta para REGISTRAR (index.html)
 @app.route('/registrar', methods=['POST'])
 def registrar_venta():
     data = request.json
@@ -27,9 +28,9 @@ def registrar_venta():
               (data['cliente'], data['producto'], data['cantidad'], data['precio'], data['total']))
     conn.commit()
     conn.close()
-    
     return jsonify({"mensaje": "Venta registrada correctamente"})
 
+# Ruta para MOSTRAR (reporte.html)
 @app.route('/obtener_ventas', methods=['GET'])
 def obtener_ventas():
     conn = sqlite3.connect('ventas.db')
@@ -38,9 +39,18 @@ def obtener_ventas():
     c.execute("SELECT * FROM ventas")
     filas = c.fetchall()
     conn.close()
-    
     ventas = [dict(fila) for fila in filas]
     return jsonify(ventas)
+
+# Ruta para ELIMINAR (Tu parte del trabajo)
+@app.route('/eliminar/<int:id>', methods=['DELETE'])
+def eliminar_venta(id):
+    conn = sqlite3.connect('ventas.db')
+    c = conn.cursor()
+    c.execute("DELETE FROM ventas WHERE id = ?", (id,))
+    conn.commit()
+    conn.close()
+    return jsonify({"mensaje": "Registro eliminado correctamente"})
 
 if __name__ == '__main__':
     init_db()
